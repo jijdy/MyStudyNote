@@ -1,0 +1,224 @@
+关于java中的集合的知识点总结
+
+集合主要分为collection和map两类
+
+Collection:
+	1：常用方法
+		boolean add(E e);//在集合的末尾添加元素，E e为对一个类的引用，集合只能存储引用类型
+		
+		boolean remove(Object o);//若本类 集合中有与o的值相同的元素，则删除该元素，并且返回真
+		
+		void clear();//清除本类集合中的所有元素，使用此方法后本类集合将为空
+		
+		boolean contains(Object o);//判断集合中是否 包含 某种元素
+		
+		boolean isEmpty();//判断集合中是否为空
+		
+		int size();//返回集合中的元素个数
+		
+		boolean addAll(Collection c);//将一个类集中的所有元素添加到另一个类集
+		
+		Object[] toArrary();//返回一个包含本类集中所有元素的数组，数组类型为Object[]
+		
+		Iterator iterator());//迭代器，集合的专用遍历方式
+		
+		例：迭代器的使用
+			boolean hasNext();//如果仍有元素可以迭代，则返回真
+			
+			E next();//返回迭代的下一个元素
+			
+			void remove();//从迭代器指向的集合中移除迭代器返回的最后一个元素（可选操作）
+			
+			首先创建一个集合
+			Collection name = new cospecies();//集合种类如下
+			
+			写入元素到集合中，一般通过name.add("需要添加的元素");
+			Iterator it = name.iterator();//创建迭代器
+			通过it.hasNext()的返回值来判断是否将这个集合迭代完毕
+			在通过it.next()对集合中的每一个元素进行操作
+			
+			注意：1；每次创建一个迭代器，这个迭代器只能对进行设定的集合迭代一次，
+				  若想再次对这个集合进行迭代，则需要再次创建一个迭代器
+				  
+				  2；在迭代器对集合进行遍历的时候，这个集合不能同时进行其他操作
+		
+	
+	2：Collection接口的分类：
+		（1）：List接口，元素按进入先后有序保存，可重复存储元素
+			①，LinkedList（接口实现类）：采用双向链表储存，插入删除较多时操作时推荐，无同步，线程不安全
+			②，ArrayList:采用数组方式存储，随机访问次数较多时推荐，无同步，线程不安全
+			③，Vector：数组方式存储，同步，线程安全，因为同步的关系，除非考虑多线程状况，否则一般不推荐使用
+			
+		（2）：Set接口，不按照插入顺序排序，不可重复存储元素，会将集合在存储时做内部排序
+			①，HashSet：使用hash表（数组）存储元素，在需要快速查询时推荐，可以放入null值，但只能放一个
+				LinkedHashSet：采用哈希表保证元素的唯一性，同时采用链表的方式维护元素的插入次序
+			②，TreeSet：底层实现为二叉树，将元素有序保存，需要进行排序时推荐，不允许放入null值
+			
+		特有功能：List：void add(int index, Object obj); 在指定的位置（index）处添加元素
+						
+						Object remove(int index); 删除在指定位置的元素，并将它返回
+						
+						Object set（int index, Object obj);修改在指定位置的元素，并返回修改前的元素
+						
+						int indexOf(Object o); 返回指定元素在集合中第一次出现的位置（索引）
+						
+						Object get(int index); 获取指定位置的元素
+						
+						ListIterator listIterator(); 列表迭代器
+						
+						List subList(int fromIndex, int toIndex); 截取集合中的子集合
+						
+					Vector：public void addElement(E obj); 相当于add();在集合中添加新的元素
+							
+							public E elementAt(int index); 相当于get(); 返回一个指定位置的元素
+							
+							public Enumeration<E> elements(); 相当于一个迭代器，将每一个元素返回遍历
+							
+					LinkedList: addFirst();addLast(); 从集合首或者集合末添加元素
+								
+								removeFirst();removeLast(); 从集合首或者集合末删除元素
+								
+								getFirst();getLast(); 从集合首或者集合末获取元素
+								
+				  Set: 		元素唯一性依靠重写hashCode()和equals()方法来保证
+							在想Set中存储元素时，会先使用hashCode()判断新元素与已经存储的元素的
+							散列值是否相对，不等则可存储，相等则再调用equal()方法判断两个对象中的内
+							容是否相等，不等才会存储，会在当前的hashCode值下产生一个新的链表来保证唯一性
+					
+					HashSet：采用数组存储，默认初始化容量为16，加载因子为0.75
+					
+					TreeSet：自然排序（无参构造）：首先为了唯一性，都需要重写hashCode和equal（）方法
+								其要去元素必须实现Compareable接口，并重写其中的compareTo()方法，元素通过
+								比较返回的int值判断排序序列（1向右子树，-1向左子树。0相等）
+							  
+							 比较器构造（有参构造）：需要在	TreeSet初始化的时候传入一个实现Comparetor接口
+								的比较器对象，或者采用匿名内部类的方式new一个Comparator对象，再冲些compare()方法
+								
+								
+Map:
+	Map用于保存含有映射关系的数据，相当于一对x，y的关系，key，value
+	
+	1：Map常用方法
+		void clear(); 用于清理集合中的袁术
+		
+		boolean containsKey(Object key); 查询map集合中是否含有指定的key，有则返回真
+		
+		boolean containsValue(Object value); 查询指定的value值
+		
+		Set entrySet(); 返回map中所包含的键值对所组成的Set集合，每个集合元素
+			元素都是Map.Entry对象（Entrys 是Map的内部类
+			
+		Object get(Object key): 返回Map中指定key所对应的value，无这个key则返回null
+		
+		boolean isEmpty(); 查询Map是否为空，空则返回真
+		
+		Set keySet(); 返回集合中所有key所组成的set集合
+		
+		Object put(Object key, Object value); 向集合中添加一个键值对，若已有key则覆盖
+		
+		void putAll(Map m); 将指定Map中的键值对复制到Map中
+		
+		Object remove(Object key); 删除key对应的键值对，返回value，若无这个指定的key，则返回null
+		
+		int size(); 返回,Map中的键值对的对数
+		
+		Collection values(); 返回Map中所有value所组成的集合（Collection）
+		
+		Entry内部类 ：Object getKey();返回该Entry中包含的key值
+					  Object getValue();返回Entry中包含的value值
+					  Object setValue(V value);设置该Entry中包含的value值，并返回该值
+					  
+	2，主要组成
+		HashMap: 可以写入null值，但最多只能有一个key为null，value则可为多个
+				 线程不安全的，若想同步，可以用Collections的synchronizedMap方法是其同步
+				 或者使用ConcurrentMap方法
+		 同！用做key的对象必须实现hashCode和equal()方法
+					  不能够保证其中的键值对的顺序
+					  尽量不要使用可变对象作为它们的key值
+		 HashTable:不能够写入null值，但是是线程安全的，但同步也就意味着性能低下
+		
+		TrerMap: 其实现了SortMap接口（基于红黑树对所有的key进行了排序，根据TreeSet的形式，要求相同）
+				 方法：Map.Entry firstEntry(); 返回最小key所对应的键值对，若Map空则为null
+					
+					   Object firstKey();返回其中最小的key值，空则返回null
+					   
+					   Map.Entry lastEntry(); 返回最大key所对应的键值对，空则为null
+					   
+					   Object lastKey(); 返回其中最大kay，空则为null
+					   
+					   Map.Entry higherEntry(Object key);返回位于指定key后一位的键值对，空为null
+					   
+					   Map.Entry lowerEntry(Object key);返回位于指定key前一位的键值对，空为null
+					   
+					   Object lowerKey(Object key);返回位于指定key前一位的key值，空为null
+		
+	3，其它
+		LinkedHashMap:使用双向链表来维护键值对的次序，但性能稍低与HashMap
+					  迭代顺序和插入顺序一致，
+					  不过单纯用于迭代遍历元素时性能很好
+		
+		IdentidyHashMap:和HashMap基本相等，允许null，但不保证键值对减的顺序
+						其使用 == 来判断key是否相等，HashMap使用equals方法
+						
+		WeakHashMap:对key为弱引用，若kay所引用的对象没有被其他变量强引用，
+					则会在回收key所引用的对象之后将key所对应的键值对删除
+					
+
+一些面试题式：
+	1，ArrayList和LinkedList的区别
+		是否线程安全：两者都是不同步的，也即线程不安全的；
+		底层数据结构：ArrayList采用了Object数组，LinkedList采用了双向链表结构（也即是指针
+		插入删除操作：数组的效率要低于链表结构的存储方式
+		快速的随机访问：链表结构不支持（即速度低)，数组结构支持（即是get(int index)方法
+		
+	2，ArrayList和Vector的区别，为什么要用ArrayList取代Vector?
+		Vector的所有方法都是同步的，这固然可以使它线程安全，但是当一个线程访问是 
+		就会在同步操作上耗费大量时间
+		ArrayList是不同步的，所以在不考虑线程安全的情况下其速度是很快的
+		
+	3，说一下ArrayList的扩容机制
+	
+	
+	4，HashSet,TreeSet,LinkedSet的对比与特点
+		HashSet不能保证元素的排列顺序，顺序可能发生变化，是线程不安全的，可以放入一个null值
+		TreeSet是SortedSet接口的唯一实现类，采用的二叉树排列可以使元素有序存储
+			它判断两个对象不相等的方式是通过equals方法返回false，或者通过CompareTo方法
+		LinkedHashSet通过元素的hashCode值来决定元素的存储位置，但是同时也使用了链表以使
+			元素以插入顺序保存，所以其迭代遍历时性能比HashSet好，但是插入删除是稍差
+			
+	5，HashTable，LinkedHashMap，HashMap，TrerMap四者对比
+		HashTable继承自Dictionary类，但它不允许key或value为null，也是同步的，故写入速度较慢
+		HashMap是最常用的Map，它通过HashCode值存储元素，根据减可以直接访问值，访问速度极快，
+			在遍历时，因为是按照哈希值排序的，所以数据的排序是完全随机的
+		LinkedHashMap在按照哈希值存储的基础上同时保留了双向链表结构，使得其遍历时的数据是完全按照
+			写入的顺序迭代的，
+			（LinkedHashMap的遍历速度只与它的实际存储数据大小有关，但是HashMap的遍历速度和他的容量挂钩）
+		TreeMap实现SortMap接口，能够将记录的数据按照键值排序，一般按照升序也可以重写比较方法
+		当迭代遍历时，得到的数据是经过排序的有序集合
+		
+	6，HashMap和HshTable的区别
+		HashMap是线程不安全的，HashTable是线程安全的，其内部方法都经过了synchronize修饰
+		HashMap效率高得多
+		少用HashTable。
+		HashMap中，null可以作为键，不过只能用一个（因为键不能重复），Table中不能够有null
+		jdk1.8之后，HashMap在解决哈希冲突时同一个哈希值下的链表长度大于阈值（默认为8）时，会将链表结构转变
+		为红黑树结构，以减少搜索时间.
+	
+	7，HashMap和HashSet的区别
+		HashSet的底层实现就是基于HashMap的，基本都是直接调用HashMap中对于键的操作
+	
+	8，HashSet如何检查重复
+		在准备将对象加入到集合中时，会先判断该对象的哈希值，若相等则还会再通过equals方法判断是否相等
+	
+	9，HashMap的底层实现
+		。。。。
+	10，HashMap的长度为什么是2的幂次方
+		为了能让 HashMap 存取高效，尽量较少碰撞，也就是要尽量把数据分配均匀。我们上面也讲到了过了，Hash 值的
+		范围值-2147483648到2147483647，前后加起来大概40亿的映射空间，
+		只要哈希函数映射得比较均匀松散，一般应用是很难出现碰撞的。但问题是一个40亿长度的数组，
+		内存是放不下的。所以这个散列值是不能直接拿来用的。
+		用之前还要先做对数组的长度取模运算，得到的余数才能用来要存放的位置也就是对应的数组下标。这个数组下标的计算方法是“ (n - 1) & hash”。（n代表数组长度）。
+		这也就解释了 HashMap 的长度为什么是2的幂次方
+		
+	11，compareble和Comparator的区别
+		。。。。。。

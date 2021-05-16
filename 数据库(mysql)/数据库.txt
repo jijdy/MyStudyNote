@@ -1,0 +1,139 @@
+关系型数据库：
+	基于关系代数理论
+	缺点：表结构不直观，实现复杂，速度慢
+	优点：健壮性高，社区庞大
+	
+1，基本操作
+	在cmd命令行中(管理员权限)
+	//启动/停止mysql服务
+		net start/stop mysql(名称为自己取的进程名称) 
+	创建服务
+		sc create myslq binPath= mysqld_bin_path
+	连接服务器
+		mysql -h 地址 -P 端口 -u 用户名 -p 密码
+	show processlist; #显示正在工作中的线程(用户）
+	show variables;  #显示系统变量信息
+	
+2，数据库操作：
+	use 数据库名；#改变当前使用的数据库，需要有权限
+	-- 显示当前系统时间，用户，数据库版本
+	 select now(), user(), version(); 
+	-- 创建库
+	 creat 数据库名  character set 字符编码集  collate 校对规则
+	-- 查看现有库
+	 show databases [like '...']; #显示所有数据库，或者使用模糊查询缩小范围
+	--查看当前库信息
+	  show create database 数据库名；
+	-- 修改库的选项信息
+	 alter database 库名 选项信息；
+	--删除
+	 drop DATABASE 数据库名；  #drop 为通用的删除命令，只需之后添加database或table等
+	 
+3，表的基本操作：
+	-- 创建表
+	 create [temporary] table 库名.表名
+		字段名 数据类型 表选项定义, ...;
+	--存储引擎 一般使用innoDB，即mysql的默认引擎
+	 show engines; #显示存储引擎的状态信息
+	 show engine 引擎名 logs|status; #显示存储引擎的日志或状态信息
+	-- 自增起始数
+	 auto_increment = '行数'
+	-- 数据/索引 文件目录
+	 data/index directory = '目录'
+	--表注释
+	 comment = 'string'
+	--查看表
+	 show ...;
+	-- 修改表结构
+	 alter table 表名 表选项
+	--重命名
+	 rename table oldname to newname;
+
+4,键与索引(约束)
+	非空约束：not null
+	唯一性约束：nuique
+	主键约束：primary key
+	外键约束：foreign key
+	检查约束：check(mysql不支持，oracle支持)
+	
+	1）唯一性约束 unique
+		alter table 表名 add unique 字段名；#对字段添加唯一性索引
+		字段名 数据类型 unique，#创建表时添加索引，为列级约束
+		unique(字段1，字段2...) # 在字段定义完成最后，将多个字段联合起来具有唯一性，表级
+		对字段进行修饰，该字段的值不能重复，但是可以为多个null
+		
+		not null nuique 同时约束一个字段，则该字段自动变为主键字段
+	
+	2）主键约束：primary key
+		对一个字段进行修饰
+		一个表中的主键值不能够重复，为唯一值，主键值不能够为null
+		一个表中只能有一个主键
+		建议使用定长的数据类型来作为主键值的类型
+		
+		通过primary key 来对字段添加或修改为主键(同上)//或使用not null unique
+		
+		一个字段（列级）作为主键，为单一主键，
+		通过primary key(字段1，字段2...) 也可定义复合主键
+		
+	3）外键约束：foreign key
+		在一个表中去引用另一张表中的数据
+		alter table t1 add constraint `t1_t2_fk` foreign key (t1_id) references t2(id);
+		或在创建时，在字段末尾
+		  foreign key(列名) references 主表名(列名);
+		在子表或从表中创建外键，外键指向的表为父表或主表，引用主表时一般使用其主键的值来对应
+		  从表中外键的列值，不一定是主表中的主键的值，不过至少具备唯一性，可以为null
+
+5，索引
+	索引在mysql的底层实现依据完全平衡二叉树(b-tree)，有较高的查找速度
+	
+	1）创建索引：
+	  create index 索引名称(命名) on 表名(列名1，列名2...)； 
+	2）删除索引：
+		  drop index 索引名称 on 表名 ；
+		explain SQL语句； 查看sql语句的检索过程和是否使用了索引
+	3）索引失效：
+		select * from 表名 while like ‘%T’； //使用模糊查询时从%开始时
+		
+		or，使用or时，除非两边都使用了索引，否则索引失效
+		
+		使用了联合索引时，单独使用第一个字段时有效，单独使用之后的字段都会失效
+		
+		在where之后的带有索引的字段本身参加了数字运算，索引会失效；
+		
+		where中的索引列使用了函数，同上参加了运算；
+		
+6，视图
+	1）创建视图：
+		create view 视图名(命名) as select * from 表名；(as之后更select语句)
+		删除：drop view 视图名；
+	2）视图作用：
+		对一个sql语句的引用，相当于指针的概念
+		视图相当于是对表中的数据的一个映射对视图的操作可以反映到表中
+		可对视图进行增删改查，会映射到表中
+		
+7，数据库的设计三范式：用于避免数据的冗余，空间的浪费
+	第一范式：要求如何一张表必须有主键，每一个字段原子性不可再分
+		表中的每一个字段中的值都是不再可拆分的原子
+	第二范式：建立在一范式的基础上，要求所有非主键字段完全依赖主键，不要产生部分依赖
+		
+	第三范式：建立在二范式的基础上，要求所有非主键字段直接依赖主键，不要产生传递依赖
+		
+	设计时充分考虑使用外键，	
+		一对一的两张表：在添加外键值同时添加unique约束，使得两张表的数据一一对应
+		
+-- 跳转到某一个数据库中
+	USE firstbase;
+
+-- 查看某个表的结构
+	DESC tablename;
+
+-- 查看某个表中的所有数据
+	SELECT * FROM tablename;
+
+-- as 为前一个字段（列）取一个别名，并以别名输出
+	SELECT namely AS '蒋遥' FROM tablename;
+
+-- 直接向表中插入数据，
+	INSERT INTO tablename(id,namely)
+		VALUES(002, '张三');
+

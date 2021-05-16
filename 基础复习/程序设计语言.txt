@@ -1,0 +1,80 @@
+按类型检查：
+	编译时：C,C++，java，Go... 在编译时就检查数据类型的
+	运行时：Python,Perl,JavaScript,Ruby...  在运行时才加载数据类型，在编译时不指定类型
+	
+按运行/编译时：
+	编译为机器代码运行：C,C++... 速度极快
+	编译为之间代码，在虚拟机中运行：java，C#... 只要机器中有支持其运行的虚拟机就可以跨平台运行
+	解释执行：Python,Perl,JavaScript... 不需要编译，直接解释一行运行一行，解释器运行
+
+按编程范式(Programming Paradigm)
+	面向过程：c，Visual Basic
+	面向对象：java，C#，c++，Scala
+	函数式：Haskell,Erlang... 
+	
+
+补码：在计算机中整数都采用补码存储
+	是对2进制的数进行取反+1，以便可以将数据中多出来的+0，-0，和一，只有一个0值
+	
+浮点数的比较：
+	a == b   ;有可能不会返回一个true值
+	Math.abs(a - b) < eps?   
+	BigDecimallal类来表示钱的计数
+	
+原始数据类型和Object类型
+	8大原始数据类型：int，long，flout...
+	Object类型：Inteager，Long，String等等
+	
+	原始数据类型：
+		是值类型，存储的是具体的值
+		用a == b 来判断
+		
+	Object类型：
+		是引用类型
+		用a == b 判断的是是否为同一个Object的引用
+		用a.equal(b),判断a和b的值是否相等，但是a中不能是null，否则报异常
+		使用Objects.equals(a,b)判断是否相等，可以避免a为null的情况报错
+		
+	装箱和拆箱：
+		装箱：
+			Inteager a = 2; //Boxing装箱，将2这个值装到一个箱子中封装，
+							//将a对象指向2所在在箱子，即完成装箱
+			Inteager b = new Inteager(2);//同上，意义相同
+			若此时将a = b；则a和b指向同一个箱子，则另一个箱子就无对象引用，会被gc回收
+	拆箱：int v = a.intValue();//将装在对象引用中的箱子中的值拿出
+	 
+	常见问题：
+ 	 new Inteager(2) == 2 ; true,会将左边以装箱的拆箱，再拿出2来右边进行对比，为真
+	 new Inteager(2) == new Inteager(2) ; false,两边都新装一个箱，但是不是同一个对象，所以为假
+	 Inteager.valueOf(x) == Inteager.valueOf(x) ; true/false,表示若已经在系统中有的值，则两个对象
+		引用同一个值，但若系统中无规定的，则会两边各自new一个引用值，则会为假，故真假不一定
+	 Inteager.valueOf(2).intValue() == 2; true,先找到一个箱子并装箱，再拆箱，
+	 new Inteager(2).equals(new Inteager(2)) ; true,判断两个引用所引用的值是否相等
+	 
+问题：
+	什么是值传递？什么是引用传递？
+		基本八大数据类型就是值传递，Object类型就是引用传递。
+	
+	什么是大端/小端存储，什么是对齐(在数据存储中)？
+		Little-Endian低位字节存放在内存的低地址端，高字节存放在高地址端
+		Big_Endian高位字节存放在内存的低地址端，低位字节存放在高地址
+		0x00为一个字节，
+		小端优点：强制转换数据不需要调整字节内容，1,2,4字节中存储的数据一致
+		大端优点：符号位的判定固定为第一个字节，容易判断正负
+			我们常用的X86都是小端存储，也即计算机大都是小端存储
+			51，少数的arm会使用大端存储
+		对齐：即是值在同一个结构体中，不同类型的数据的位数起始总是它的大小的倍数
+	
+	String s = new Stirng("test");创建了几个对象？
+		两个。“test”首先就会创建一个String对象，之后的new还会再一次
+		创建一个和“test”同参数的String对象，左边就是直接引用第二次创建的对象了
+	
+	equals和hashCode的关系？
+		equals比较对象的值是否相等，hashCode也是由于计算值是否相等
+		但是hashCode相等不代表equal就一定相等，反之equal相等则hash值一定相等
+	
+	什么是序列化与反序列化？
+		序列化是将对象转化为字节流，通过网络传递。通过实现serialized接口来进行序列化。
+		不过一般是在数据库来进行序列化
+		
+	

@@ -1,0 +1,5 @@
+mysql的一些主要知识点和命令
+存储引擎：
+	show engines;  //查看mysql提供的所有存储引擎
+	在mysql5.5之后。存储引擎都是innoDB事务性存储引擎
+	 

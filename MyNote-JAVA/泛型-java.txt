@@ -1,0 +1,100 @@
+ 1,什么是泛型：
+	定义：将类型明确的工作推迟到创建对象或调用方法的时候才明确的特殊类型
+		  代码更加简洁，只在使用是才确定其类型，不需要再进行强制转换，
+		  代码更加健壮，只要在编译期间没有报错，在运行期间也可以正常运行
+	
+	参数化类型（即将类型当做参数使用）:
+		<数据类型>只能是引用类型
+		ArrayList<E>中的E就称为类型参数 变 量
+		而ArrayList<Integer>中的Integer为实际的类型参数
+		所以将ArrayList<E>整个称为泛型类型
+		
+	泛型在集合中运用广泛
+		//在创建集合时确定了集合中元素的类型
+		ArrayList<String> list = new ArrayList<>();
+		list.add("hello");
+		list.add("world");
+		//在确定了类型之后，可以使用增强for循环
+		for(String s : list){
+			System.out.println(s);
+		}
+		
+2，泛型基础
+	1，在类上定义的泛型，在方法中也可以引用
+		public class ObjectTool<E>{ //将类定义为泛型
+			private E obj;//定义了一个为泛型类型的obj的数据类型
+			
+			public E getObj(){ //将方法的返回值类型通过泛型定义
+				return obj
+			}
+			
+			public void setObj(E obj){ //在方法中的传递参数也可以使用泛型定义
+				this.obj = obj;
+			}
+		}
+		
+	2，泛型方法
+		如果我们不关心这个类的数据类型，而只是想要使用其中的一个方法的泛型
+		这个时候就可以只将方法定义为泛型，称为泛型方法
+		
+		public <E> void show(E e){
+			System.out.println(e);
+		}
+	
+	3,泛型类所派生出的子类
+		泛型类是拥有泛型特性的类，其本质仍然是一个java类，还是可以继承的
+		
+		//首先定义一个泛型接口
+			public interface Inter<E>{
+				public abstract void show(E e);
+			}
+			
+		//子类明确了泛型类中的类型参数变量
+			public class Inter1 implements Inter<String>{
+				@Override
+				public void show(String s){
+					System.out.println(s);
+				}
+			}
+			
+			//实现方法
+				Inter<String> i = new Inter1();
+		
+		//子类不明确泛型类的类型参数变量
+			public class Inter1<E> implements Inter<E>{
+				@Override
+				public void show(E e){
+					System.out.println(e);
+				}
+			}
+			
+			//实现方法
+				Inter<String> ii = new Inter1<>();
+				
+		----若实现类要重写父类的方法，返回值的类型也要和父类一致
+		----类上声明的泛型只对非静态成员有效（static
+		
+	4，类型通配符 ？
+		-泛型中的<Object>和<String>并没有继承关系
+		-？号通配符在<>中可以匹配任何类型，任意的java类都可以匹配
+		//在不清楚list中所包含的元素时可以通过？来表示其数据类型可为任意值
+		//但是在不确定这个对象的类型之前，使用了？之后不能够调用对象与类型有关的方法
+		public void test(List(?) list){
+			for(int i = 0; i < list.size(); i++){
+				System.out.println(list.get(i))；
+			}
+		}
+		
+		通配符上限：
+			List<? extends Number> //表面List集合所装载的元素只能是Number或其子类
+		通配符下限：
+			List<? super Type> //其传递入的类型不能比Type更低级
+	5，通配符与泛型的抉择
+		--如果参数之间的类型有依赖关系，或者返回值是与参数有依赖关系的，使用泛型
+		--如果没有依赖关系，则使用通配符会让对象的运用更加灵活
+		
+	6，泛型擦除：
+		泛型是提供给javac编译器使用的，在结果编译之后生成了class文件会将泛型转变为
+		你定义过的类型，以使程序运行效率不受到影响。
+	
+	

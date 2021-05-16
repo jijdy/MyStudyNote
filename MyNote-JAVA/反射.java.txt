@@ -1,0 +1,67 @@
+反射概述：
+	定义：
+		就是将java类中的各个组成部分进行解刨，并映射一个个的java对象
+		一个类中有：构造方法，方法，成员变量等，都可以通过反射映射为一个个对象
+		映射后的构造方法可以生成对象；
+		映射后的方法可以用来调用它执行对应的方法；
+		映射后的字段（成员变量）可以用来获取或改变对应字段的值；
+	
+	反射用来干什么：
+		一般用于框架，，或者是有些抽象度较高的底层代码，日程开发中用的不多
+		反射是框架设计的灵魂。。。
+	
+	如何得到反射：
+		通过一个static Class<?> 的forName(String className);方法来返回给定类名的class对象
+		
+		例：Class clazz = Class.forName("com.cj.test.Person");
+			//在方法中输入想要反射的类的全路径，因为是使用字符串接收的，所以
+			//可以将路径写入打配置文件中，一般的框架中都要类似的配置
+			
+解刨类及各种反射：
+	Class对象中的方法
+		public Constructor getConstructor(Class<?>...parameterTypes);
+		public Method getMethod(String name,Class<?>… parameterTypes)
+		public Field getField(String name);
+		//从对象的私有构造，方法，属性中进行反射
+		public Constructor getDeclaredConstructor(Class<?>…parameterTypes);
+		public Method getDeclaredMethod(String name,Class<?>… parameterTypes);
+		public Field getDeclaredField(String name);
+
+	得到类的字节码的方式：//先得到字节码文件的对象，再对这个对象进行操作以进行反射
+		1，class.forName("类的路径“）；
+			Class clazz = Class.forName("com.cj.test.Person");
+		2，对象.getClass();
+			Person p = new Person();
+			p.getClass();
+		3，类名.class;
+			Class clazz = Person.class;
+			
+	1，返回构造方法
+		//因为一个类中的构造方法的名称都和类名对齐，只有参数类型的区别
+		//返回的public类型的结构方法
+			Constructor c = clazz.getConstructor(参数类型.class,参数类型.class,...);
+		//返回private类型发结构方法
+			Constructor c = clazz.getDeclaredConstructor(参数类型.class,参数类型.class,...);
+			c.setAccessible(true); //暴力反射，获取可以读取私有参数的权限，
+			c.newInstance(参数); //对这个结构方法进行反射
+	
+	2，反射类中的方法：
+		//首先创建一个字节码，再用将其反射到一个对象中
+			Class clazz = Class.forName("路径");
+			类名 对象 = （类名）clazz.newInstance();//对类进行强制转换
+			
+		//之后通过Method类接收从字节码提取出的方法
+			Method m = clazz.getMethod("方法名"，参数类型.class，参数类型.class...);
+			m.invoke(对象，参数)； //invoke方法进行调用反射
+			//若是私有则需要暴力反射，
+			//同时若有返回值的方法则需要将方法的反射值赋予一个同返回值类型的值
+			
+	3，反射类中的属性
+		//首先床架一个字节码
+		//再就是对类进行强转
+		
+		Person p = (Person)clazz.newInstance();
+		Field f = clazz.getField("属性名称");
+		String s = (String)f.get(); //将属性中的数据提取到s中
+		//对于私有属性仍然需要暴力反射
+		

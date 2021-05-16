@@ -1,0 +1,33 @@
+从Scanner中读取数据
+	import java.util.Scanner;
+实例化对象
+	Scanner scanner = new Scanner(System.in);
+	String str = scanner.next();//将scanner中的数据提取到字符串中
+	
+	.hasNext();是否还有下一个数或字符
+	.next(); 从空格为结束符
+	.nextLine(); 以回车为结束符
+	.nextInt(); 以整形数据返回值
+	
+String的一些方法：
+	isEmpty() returns true if the string is empty, otherwise – false;
+	toUpperCase() returns a new string in uppercase;
+	toLowerCase() returns a new string in lowercase;
+	startsWith(prefix) returns true if the string starts with the given string prefix, otherwise, false;
+	endsWith(suffix) returns true if the string ends with the given string suffix, otherwise, false.
+	contains(...) returns true if the string contains the given string or character;
+	substring(beginIndex, endIndex) returns a substring of the string in the range: beginIndex, endIndex - 1;
+	replace(old, new) returns a new string obtained by replacing all occurrences of old with new that can be chars or strings.
+	trim() returns a copy of the string obtained by omitting the leading and trailing whitespace. Note that whitespace includes 
+	not only space character, but mostly everything that looks empty: tab, carriage return, newline character, etc
+	
+	string字符串的比较，用.equals(other string)来比较，或者euqalIgnoreCase(),
+	
+
+File类的基本方法：
+	String getPath()返回该文件或目录的字符串路径；
+	String getName()返回此文件或目录的名称（仅为路径的姓氏）
+	boolean isDirectory()退货是的如果它是一个目录并且存在，否则，false ;
+	boolean isFile()退货是的如果它是一个存在的文件（不是一个目录），否则，false ;
+	boolean exists()退货是的如果文件系统中确实存在此文件或目录，则为，false ;
+	String getParent()返回包含此文件或目录的父目录的字符串路径。

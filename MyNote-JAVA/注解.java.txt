@@ -1,0 +1,152 @@
+java中关于注解的使用：
+	1，含义：注解相当于对这段代码添加了一条标签
+	
+	2，定义注解：
+		public @interface TestAnnotation{
+		} //创建了一个名为TestAnnotation的注解，
+		
+	3，元注解：用于修饰注解的注解
+		@Retention(...) //...即为下面三个选项
+			由于解释说明这个注解的存活时间
+			RetentionPolicy.SOURCE 注解只在源码阶段被保留，在编译时就会丢弃
+			RetentionPolicy.CLASS 注解只保留到编译进行的时候，不会加载到JVM中
+			RetentionPolicy.RUNTIME 保留到程序运行，即会加载入JVM中，
+			
+		@Documented
+			能够将注解中的元素包含到javadoc中
+			
+		@Target
+			由于限定这个注解的运用范围，
+			ElementType.ANNOTATION_TYPE 可以给一个注解进行注解
+			ElementType.CONSTRUCTOR 可以给构造方法进行注解
+			ElementType.FIELD 可以给属性进行注解
+			ElementType.LOCAL_VARIABLE 可以给局部变量进行注解
+			ElementType.METHOD 可以给一个方法进行注解
+			ElementType.PACKAGE 可以给一个包进行注解
+			ElementType.PARAMETER 可以给一个方法中的参数进行注解
+			ElementType.TYPE 给一个类型进行注解，如类，接口，枚举
+			
+		@Inherited
+			Inherited是继承的意思，如果被其注解的注解的一个类的子类没有
+			被如何注解注解的话，那这个子类直接基础这个父类的注解
+			
+		@Repeatable
+			表示可以重复运用的意思，表示注解的值可以同时取多个
+			@interface Persons {
+				Person[]  value();
+			} // 定义了一个容器注解，用来存放其他注解
+			  // 其中必须有value属性，同时属性类型必须是被@R修饰的注解数 组
+			@Repeatable(Persons.class) // 引用了这个容器注解
+			@interface Person{
+				String role default ""; //default设置默认值
+			}
+			 //之后都是Person这个注解的属性
+			@Person(role="artist")
+			@Person(role="coder")
+			@Person(role="PM")
+			public class SuperMan{
+			}
+				
+	4，注解的属性：（成员变量）
+		注解只有成员变量，没有方法
+		@Target(ElementType.TYPE) 
+		@Retention(RetentionPolicy.RUNTIME)
+		public @interface TestAnnotation {
+			int id();
+			String msg();
+		} // 定义了两个成员变量，
+		
+		//使用这个注解时，需要对value（即变量）赋值 
+		@TestAnnotation(id=3,msg="hello annotation")
+		public class Test {
+		}
+		//注解中的成员变量的类型，只能是8种基本数据类型或类，接口，注解及它们的数组
+		//也可通过default给属性赋予默认值
+			public int id() default 3;//将id的默认值设为3
+		//设置了默认值的注解使用时可以不需要写入value赋值语句
+			@TestAnnotation() 即可直接为代码赋予默认值的属性
+		//若注解中只有一个value，则可以将value= 省略
+	
+	5，java中预置的注解
+		@Deprecated 表示被修饰的元素已经过时了
+		@Override 子类中要复写父类中别气修饰的方法
+		@SuppressWarnings 阻止警告
+		@SafeVarargs 参数安全类型注解，
+		@FunctionalInterface 函数式接口注解
+		
+	6，注解的提取（注解和反射的运用0
+		//首先通过Class对象的isAnnotationPresent(),方法判断它是否应用了注解
+		public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {}
+		
+		//通过public Annotation[] getAnnotations() {}方法返回所以注解
+		//通过getAnnotation()方法来获取Annotation对象，返回的是指定类型的注解
+		public <A extends Annotation> A getAnnotation(Class<A> annotationClass) {}
+		
+		@TestAnnotation()
+		public class Test {
+			public static void main(String[] args) {
+				boolean hasAnnotation = Test.class.isAnnotationPresent(TestAnnotation.class);
+				if ( hasAnnotation ) {
+					TestAnnotation testAnnotation = Test.class.getAnnotation(TestAnnotation.class);
+					System.out.println("id:"+testAnnotation.id());
+					System.out.println("msg:"+testAnnotation.msg());
+				}
+			}
+		}
+		
+		//package ceshi;
+		//import java.lang.reflect.InvocationTargetException;
+		//import java.lang.reflect.Method;
+		public class TestTool {
+			public static void main(String[] args) {
+				// TODO Auto-generated method stub
+				NoBug testobj = new NoBug();
+				Class clazz = testobj.getClass();//反射
+				Method[] method = clazz.getDeclaredMethods();
+				//用来记录测试产生的 log 信息
+				StringBuilder log = new StringBuilder();
+				// 记录异常的次数
+				int errornum = 0;
+				for ( Method m: method ) {
+					// 只有被 @Jiecha 标注过的方法才进行测试
+					if ( m.isAnnotationPresent( Jiecha.class )) {
+						try {
+							m.setAccessible(true);
+							m.invoke(testobj, null);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							//e.printStackTrace();
+							errornum++;
+							log.append(m.getName());
+							log.append(" ");
+							log.append("has error:");
+							log.append("\n\r  caused by ");
+							//记录测试过程中，发生的异常的名称
+							log.append(e.getCause().getClass().getSimpleName());
+							log.append("\n\r");
+							//记录测试过程中，发生的异常的具体信息
+							log.append(e.getCause().getMessage());
+							log.append("\n\r");
+						} 
+					}
+				}
+				log.append(clazz.getSimpleName());
+				log.append(" has  ");
+				log.append(errornum);
+				log.append(" error.");
+				// 生成测试报告
+				System.out.println(log.toString());
+			}
+		}
+
+
+测试的结果是：
+
+1234567890
+1+1=11
+1-1=0
+3 x 5=15
+chufa has error:
+  caused by ArithmeticException
+/ by zero
+NoBug has  1 error.

@@ -1,0 +1,109 @@
+多线程的创建和启动方式：
+	-通过继承Thread类
+	-通过实现Runnable接口
+		通过重写其中的run()来实现线程所实现的功能
+		在通过在main中实例化这个类，通过.start()方法来开启线程
+		
+线程的常用方法：
+	currentThread() 获得当前线程Thread.currentThread().getName()
+	thread.setName() 设置线程名称
+	isAlive() 判断当前线程是否处于活动状态
+	sleep() 让当前线程休眠指定的毫秒数
+		另：System.currentTimeMillis() 返回当前的系统时间，以毫秒为单位
+		在子线程中的run方法中，若有受检异常(编译期)，则只能现在捕获，不能够抛出
+	getId() 获得线程的唯一标识（某个线程结束后，编号可能会被后续线程使用，重启jvm后不同
+	yieId() 放弃当前的CPU资源
+	setPriority() 设置线程的优先级（1~10，默认为5）
+	interrupt() 中断线程，只是在当前线程打一个停止标志 停止线程还需要具体操作
+	isInterrupt() 判断中断标志位
+	setDaemon() 输入一个boolean型数据，true则将线程设置守护线程
+	join(); 一般若子线程的运行时间大于主线程时，就会在主线程中调用子线程的join()方法，以使得
+		在子线程的运行结束之前主线程不会关闭，而是在子线程运行完毕之后才关闭主线程
+	
+一个线程的生命周期/状态：
+	1）新建状态(New)：Thread thread = new Thread();创建未启动
+		此时主要是完成对线程的属性的设置，
+	2）可运行状态(Runable):
+		在.strat方法之后进入，被线程调度器选中则开始运行，运行时使用yieId则再次等待
+		在等待或者正常工作中，
+		//此时可以再分出一个Runing状态以表示正在运行，不过源码中并没有这个状态
+	3）阻塞状态(BLOCKED)：
+		等待阻塞：通过调用线程的wait()方法，让线程等待某个工作的完成
+		同步阻塞：线程在获取synchronized同步锁失败(被其他线程占用),就会进入同步阻塞
+		其他阻塞：通过调用线程的sleep()或join()或发出了i/o请求时，会进入阻塞。当sleep()超时，
+			join()等待线程终止或者超时，或i/o处理完毕时，线程程序进入可运行状态
+		在io操作完成并获得锁后进入Runable状态
+	4）等待状态(WAITING)：
+		通过调用对象的wait方法，从Runable状态进入等待状态，调用notify() 方法进入可运行状态
+		调用join() 也会进入等待直到加入的线程执行完成再进入可运行
+	5）TIMED_WAITING: 
+		调用sleep(long) wait(long)后，直到时间超时就会再次进入可运行状态
+	6）TERMINATED:
+		线程的run方法运行结束，线程终止
+		
+java多线程的原子性：
+	原子就是指不可分割的意思：
+		访问某个共享变量的操作在其他变量看来，该操作要么已经执行完毕，要么尚未方式，在中间的操作是不可见的
+		访问同一组共享变量的原子操作是不能够交错的
+	原子性的实现;
+		使用锁，能够保证共享变量在莫一时刻只能被一个线程访问
+		CAS指令，在硬件(处理器和内存)上实现
+
+多线程锁的定义：
+	内部锁通过synchronized关键字实现，显示锁通过java.concurrent.locks.Lock接口实现
+	同一时间一个锁只能够由一个线程持有，用以保证线程的原子性，可见性，有序性
+	java中每个对象都有一个内部锁(Intrinsic lock)即监视器，是一个排它锁，以保证安全
+	死锁：在线程同步时若使用多个锁，如果获得锁的顺序与释放锁的顺序不一致，可能导致死锁
+		将多个线程获得锁的顺序设置为一样可以避免死锁
+		
+锁的常用方法：
+	int getHoleCound(); 返回当前线程调用lock()方法的次数
+	int getQueueLength();返回在等待获得锁的线程的预估数
+	int getWaitQueueLength(Condition condition) 返回与Condition条件相关的等待的线程预估数
+	boolean hasQueuedThread(Thread thread) 查询参数指定的线程是否在等待获得锁。
+	boolean hasQueuedThreads() 查询是否还有线程在等待获得该锁。
+	boolean hasWaiters(Condition condition) 查询是否有线程正在等待指定的Condition条件
+	boolean isLocked() 查询当前锁是否被线程持有。
+	boolean isHeldByCurrentThread() 判断当前线程是否持有该锁。
+	
+
+volatile关键字(只能修饰变量)：
+	其能够强制让线程从公共的内存中读取变量的值，而不是从自己的工作内存中读取
+	与synchronized比较
+		-volatile是线程同步的轻量级实现，仅仅能够实现变量的同步，所以性能更好
+		 而synchronized可以修饰方法，代码块，
+		-多线程访问volatile变量不会发生阻塞，synchronized可能回阻塞
+		-volatile保证了数据的可见性，但不一定原子性，synchronized都可以
+
+i++的原子操作：
+	实例化一个AtomicInteger/AtomicLong对象，通过调用对象的.getAndIncrement()方法自增
+
+java生产者消费者模式:
+	负责生成数据的模块是生产者，负责使用数据的模块是消费者，先有数据才能使用数据，即当
+	无数据时消费者需要等待。
+
+java中利用管道实现线程间的通信：
+	PipeInputStream和PipeOut[putStream类和PipedReader和PipedWriter类
+	定义管道字节流：
+		PipeInputStream inputStream = new PipeInputStream();
+		PipeOutputStream outputStream = new PipeOutputStream():
+	在输入和输出之间建立连接：
+		inputStream.connect(outputStream);
+	创建线程在管道流中写入数据
+		new Thread(new Runable(){
+			@Overried
+			public void run(){
+				writeDate(outputStream);
+			}
+		}).start();
+	定义方法向管道写入数据：
+		public static void writeDate(PipeOutputStream out){
+			try{
+				String data = "";
+				out.write(data.getBytes());//写入的数据结果二进制转换
+				out.close(); //关闭管道流
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}
+		

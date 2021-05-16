@@ -1,0 +1,10 @@
+SELECT语句
+	
+	分组统计语句
+		使用group by子句对列进行分组
+		SELECT 列名1,列名2,...FROM 表名
+			group by 列名; //对该列中具有相同值的分组
+		
+		使用having子句对分组后的结果进行过滤
+		SELECT 列名...FROM 表名
+			group by 列名 having ...; //添加限定条件

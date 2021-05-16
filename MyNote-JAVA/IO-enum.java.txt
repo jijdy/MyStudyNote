@@ -1,0 +1,173 @@
+枚举（enum）：
+	java中的枚举不仅仅还可以定义常量，还可以向其中写入方法，成员变量等，
+	枚举可以简单的当做一个类来理解。
+	public enum OrdinalEnum {
+		WEST("live in west"),
+		EAST("live in east"),
+		SOUTH("live in south"),
+		NORTH("live in north");
+		
+		String description;
+		OrdinalEnum(String description){
+			this.description = description;
+		}
+		public String getDescription() {
+			return description;
+		}
+		public void setDescription(String description) {
+			this.description = description;
+		}
+		public static void main(String[] args) {
+			for(OrdinalEnum ordinalEnum : OrdinalEnum.values()){
+				System.out.println(ordinalEnum.getDescription());
+			}
+		}
+	}
+	
+	还有EnumSet和EnumMap
+	
+I/O:
+	1，File类:主要是对文件系统中的文件和文件夹进行操作的类，主要是文件的创建，删除，获取文件描述符
+	class FileDemo{
+		public static void main(String[] args) {
+			File file = new File("D:\\file.txt");
+			try{
+				f.createNewFile(); // 创建一个文件
+			// File类的两个常量
+			//路径分隔符(与系统有关—<windows中是 ; linux中是： >
+			System.out.println(File.pathSeparator); // ;
+			//与系统有关的路径名称分隔符<windows中是 \ linux中是 / >
+			System.out.println(File.separator); // \
+			
+			// 删除文件
+			/*
+			File file = new File(fileName);
+			if(f.exists()){
+				f.delete();
+			}else{
+				System.out.println("文件不存在");
+			}
+			*/
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	//也可以对文件夹进行一系列的操作
+	class FileDemo{
+		public static void main(String[] args) {
+			String fileName = "D:"+ File.separator + "filepackage";
+			File file = new File(fileName);
+			f.mkdir();
+			// 列出所有文件
+			/*
+			String[] str = file.list();
+			for (int i = 0; i < str.length; i++) {
+				System.out.println(str[i]);
+			}
+			*/
+			//使用file.listFiles();列出所有文件，包括隐藏文件
+			//使用file.isDirector();判断指定路径是否是目录
+		}
+	}
+	File类的主要方法
+		public String getName(); 返回此路径表示的文件或目录的名称
+		
+		public String getParent(); 返回此路径的父路径的字符串
+		
+		public String getPath(); 将此路径名称转换为一个路径名称字符串
+		
+		public boolean isFile(); 测试此路径表示的文件是否是一个标准文件
+		
+		public boolean equals(Object obj); 测试此路径与给定对象是否相等
+		
+		public String[] list(); 返回此路径名中的文件和目录的名称所组成的字符串数组
+		
+		public boolean mkdir(); 创建此路径名指定的目录，即文件夹
+		
+		public String getAbsolutePath(); 返回路径名的绝对路径名称字符串
+		
+		public boolean exists(); 测试此路径名所表示的文件或目录是否存在
+		
+	
+	2，字节流：
+		OutputStream:字节输出流
+			void close() ：关闭此输出流并释放与此流相关联的任何系统资源。
+			void flush() ：刷新此输出流并强制任何缓冲的输出字节被写出。
+			void write(byte[] b)：将 b.length字节从指定的字节数组写入此输出流。
+			void write(byte[] b, int off, int len) ：从指定的字节数组写入 len字节，从偏移量 off开始输出到此输出流。
+			abstract void write(int b) ：将指定的单个字节写入到输出流。
+
+			// 使用File对象创建流对象
+			File file = new File("a.txt");
+			FileOutputStream fos = new FileOutputStream(file);
+		  
+			// 使用文件名称创建流对象
+			FileOutputStream fos = new FileOutputStream("b.txt");
+
+		IntputStream:字节输入流
+			int available(); 返回可读的字节数量
+			int read(byte[] , int off, int len); 将从off开始的len个长度的数据读取到byte数组中
+			abstract int read(); 读取数据
+			long skip(long n); 跳过指定个数的字节
+			synchronize void reset(); 重置读取位置为输出mark标记的位置
+			boolean markSupported(); 若调用的流支持mark
+			
+	3，字符流：
+			// 使用File对象创建流对象
+			File file = new File("a.txt");
+			FileWriter fw = new FileWriter(file);
+		  
+			// 使用文件名称创建流对象
+			FileWriter fw = new FileWriter("b.txt");
+		Read类：字符输入流
+			int read(): 若调用的输入流的下一个字符可读则返回一个整形，遇到文件尾则返回-1
+			int read(char buffer[]); 从缓冲区读取字符，返回时间成功读取到的字符数，文件尾返回-1
+			abstract int read(char buffer[],int offset,int numChars);
+				读取buffer缓冲区中的offset开始读取numChars个字符，返回读到的字符数，尾尾-1
+			boolean ready(); 若下一个输入请求不等待则返回真，否则为假
+			long skip(long numChars); 跳过num个输入字符，返回跳过的字符数
+			boolean MarkSupport(); 判断当前流是否支持标记流
+			void reset();
+			void mark(int numChars);
+			
+		Writer类：字符输出流
+			abstract void flush(); 刷新缓冲区
+			Writer append(CharSequence csq); 追加一个字符序列
+			其余和read类似。。。。
+	
+	File--类：文件流
+	ByteArray--类：字节数据流
+	Piped--类：管道流
+	SequenceInputStream类：顺序流,将多个输入流合并为一个输入流，字节
+	Filter--类：过滤流，其他同类型流的包装
+	
+	4，序列化与反序列化：
+		通过ObjectOutputStream将实现了序列化接口（Serializable）的类的对象进行二进制化
+		通过ObjectInputStream将序列化的元素数据恢复为对象，以流的形式读取对象
+		
+	IO异常处理：
+		public class HandleException1 {
+			public static void main(String[] args) {
+				// 声明变量
+				FileWriter fw = null;
+				try {
+					//创建流对象
+					fw = new FileWriter("fw.txt");
+					// 写出数据
+					fw.write("程序员"); //程序员
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						if (fw != null) {
+							fw.close();
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+						
+				}
+			}
+		}
+
+	

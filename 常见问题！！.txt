@@ -1,0 +1,109 @@
+1，java基础：
+	常见的javaAPI的使用
+	
+2，java并发：
+
+	1）什么是线程和进程? 线程与进程的关系,区别及优缺点？
+	2）说说并发与并行的区别?
+	3）为什么要使用多线程呢?
+	4）使用多线程可能带来什么问题?（内存泄漏、死锁、线程不安全等等）
+	5）创建线程有哪几种方式？（a.继承 Thread 类;b.实现 Runnable 接口;c. 使用 Executor 框架;d.使用 FutureTask）
+	6）说说线程的生命周期和状态?
+	7）什么是上下文切换?
+	8）什么是线程死锁?如何避免死锁?
+	10）说说 sleep() 方法和 wait() 方法区别和共同点?
+	11）Java 内存模型（JMM）、重排序与 happens-before 原则了解吗？
+	12）synchronized 关键字、volatile 关键字？
+	13）ThreadLocal 有啥用（解决了什么问题）？怎么用？原理了解吗？内存泄露问题了解吗？
+		为什么要用线程池？
+	14）ThreadPoolExecutor 类的重要参数了解吗？
+	15）ThreadPoolExecutor 饱和策略了解吗？
+	16）线程池原理了解吗？
+	17）几种常见的线程池了解吗？
+	18）为什么不推荐使用FixedThreadPool？
+	19）如何设置线程池的大小？
+	20）AQS 了解么？原理？AQS 常用组件：Semaphore (信号量)、CountDownLatch （倒计时器） CyclicBarrier(循环栅栏)
+		ReentrantLock 、 ReentrantReadWriteLock 、StampedLock（JDK8）
+	21）CAS 了解么？原理？Atomic 原子类并发容器：ConcurrentHashMap 、 CopyOnWriteArrayList 、 
+		ConcurrentLinkedQueue BlockingQueue 、ConcurrentSkipListMapFuture 和 CompletableFuture
+	
+JVM：
+	什么是虚拟机？
+	Java 内存区域是怎么划分的？
+	大对象放在哪个内存区域？
+	垃圾回收有哪些算法？
+	GC 的流程什么是类加载？
+	何时类加载？
+	类加载流程？
+	知道哪些类加载器。类加载器之间的关系？
+	类加载器的双亲委派了解么？ 
+	结合 Tomcat 说一下双亲委派（Tomcat 如何打破双亲委托机制？…）。
+	常见调优参数有哪些
+	
+数据库(MySQL)
+	MySQL 中常用的数据类型、字符集编码
+	MySQL 简单查询、条件查询、模糊查询、多表查询以及如何对查询结果排序、过滤、分组……
+	MySQL 中使用索引、视图、存储过程、游标、触发器
+	索引：索引优缺点、B 树和 B+树、聚集索引与非聚集索引、覆盖索引
+	事务：事务、数据库事务、ACID、并发事务、事务隔离级别
+	存储引擎（MyISAM 和 InnoDB）
+	锁机制与 InnoDB 锁算法
+	
+数据库缓存(Redis)
+	Redis 和 Memcached 的区别和共同点
+	为什么要用 Redis/为什么要用缓存？
+	Redis 常见数据结构以及使用场景分析
+	Redis 没有使用多线程？为什么不使用多线程？
+	Redis6.0 之后为何引入了多线程？
+	Redis 给缓存数据设置过期时间有啥用？
+	Redis 是如何判断数据是否过期的呢？
+	过期的数据的删除策略了解么？
+	Redis 内存淘汰机制了解么？
+	Redis 持久化机制(怎么保证 Redis 挂掉之后再重启数据可以进行恢复)
+	Redis 缓存穿透、缓存雪崩？
+	如何保证缓存和数据库数据的一致性？
+
+Maven：
+	
+	
+Git：
+	
+	
+Docker：
+	
+	
+Spting/SpringBoot 
+	springBoot-guide:springboot的核心知识点总结
+	springAll:
+	SpringBoot-Notebook:
+	springboot-learning-example:
+	
+	
+Netty:
+	是目前java网络编程最热门的框架。
+	Netty 基于 NIO （NIO 是一种同步非阻塞的 I/O 模型，在 Java 1.4 
+		中引入了 NIO ）。使用 Netty 可以极大地简化并简化了 TCP 和 UDP 
+		套接字服务器等网络编程,并且性能以及安全性等很多方面都非常优秀。
+	我们平常经常接触的 Dubbo、RocketMQ、Elasticsearch、gRPC、Spark、
+		Elasticsearch 等等热门开源项目都用到了 Netty。
+	大部分微服务框架底层涉及到网络通信的部分都是基于 Netty 来做的，
+		比如说 Spring Cloud 生态系统中的网关 Spring Cloud Gateway 。
+
+elasticsearch(搜索引擎)：
+	
+	
+Zookeeper(服务注册与发现)：
+	
+	
+消息队列：
+	RocketMQ ：阿里巴巴开源的一款高性能、高吞吐量的分布式消息中间件。
+	Kafaka: Kafka 是一种分布式的，基于发布 / 订阅的消息系统。
+		关于它的入门可以查看：Kafka 入门看这一篇就够了
+	RabbitMQ :由 erlang 开发的基于 AMQP（Advanced Message Queue 
+		高级消息队列协议）协议实现的消息队列
+
+	
+
+分布式：
+	......
+

@@ -1,0 +1,23 @@
+常见的http请求
+	GET 发送请求,POST 新增,PUT 修改,DELETE 删除.
+	restful风格
+	
+	通过id获取一个用户，get请求
+	/user?id=1  传统方式
+	/user/1   restful风格
+	 
+	config层用与放置配置类
+	@SpringBootApplication注解包含了@ComponentScan注解
+	@ComponentScan("文件头目录"，“---”) //用于扫描文件下的http请求命令,指定文件主目录，
+			，也即是添加包含关系，可扫描多个包
+	
+	controller层用于定义接口，请求的入口。
+	@RestController注解返回文本数据，一般用来返回json
+	@RequstMapping //http请求，包含所有的http请求(8种)
+		@GetMapping @Post-- @Put-- @Delete-- 等等
+		
+		@GetMapping("/hello")
+			等价于
+		@RequestMapping(value="/hello", method=RequestMethod.GET)
+
+	

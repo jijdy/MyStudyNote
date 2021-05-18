@@ -1,0 +1,10 @@
+SpringBoot的启动流程？
+
+日志的打印？
+
+http的请求？
+
+http的xml脚本文件编写？
+
+application.properties和application.yml 和bootstrap.properties配置文件对项目的配置？
+

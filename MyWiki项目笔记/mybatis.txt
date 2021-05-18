@@ -1,0 +1,24 @@
+
+
+业务层，服务层：业务代码
+
+表现层：页面相关
+
+持久层框架：与数据库相连接的框架和接口
+	mybatis，hibernate
+	
+	在java代码中创建domain层(或entity，POJO) 
+		用于完成实体类与数据库表的一一映射。
+		
+	创建Mapper层，即是Dao层，(因为后续要使用
+		官方代码生成器，生成的代码就是xxxMapper)
+		
+	思路：
+		在使用mappper之前在主启动类上使用@MapperScan("mapper的路径")标注持久层路径
+		
+		http（脚本）发送请求连接到相关信息
+		到达控制层(controller) 通过@RequestMapping("")等的http请求方式注解使用页面
+		控制层从业务逻辑层(service)的@Service来查找所进行的操作
+		若有需求则业务层再从持久层(mapper)找到所需类的数据库映射并返回
+		/另，domain层(entity,POJO)用于定义和数据库表中一一对应的映射数值
+		

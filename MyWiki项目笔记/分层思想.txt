@@ -1,0 +1,11 @@
+src
+	main
+		java
+			com.example.mywiki
+				config:一些配置文件，启动项也可以放入其中。
+				controller:控制层，用于设置前端及交互界面
+				domain:即dao层，主要是存放一些与数据库交互的信息
+				mapper:mybatis的一些自动生成的关于数据库的接口类
+				req:request请求，主要存放能够被前端所操作的数据库信息，(例：可被用于搜索的信息)
+				resp:response响应，用于存放一些能够被返回到前端的数据库信息或信息，(如去掉密码的用户信息)
+				service:服务层，用于对从控制层传来的信息进行一系列操作并完成一些业务代码并返回值

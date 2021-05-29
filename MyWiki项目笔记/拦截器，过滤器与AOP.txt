@@ -1,0 +1,13 @@
+springboot中的AOP使用：
+	AOP，即切面。
+	在定义的类上添加@Aspect注解表示这是一个切面
+					@Component注解表示这个类交给SpringBoot来管理，即使用SpringBoot的框架支持
+	
+	首先定义一个切点：使用@Pointcut注解定义一个切点类，之后代表其使用范围，包名之后..之后以*Controller为后缀
+					  的类，其中的所有方法，(..)表示方法中的所有参数
+					@Pointcut("execution(public * com.example.*.controller..*Controller.*(..))")
+					public void controllerPointcut() {}
+		@Before("controllerPointcut()")  前置通知 在切点执行之前所进行操作
+		@After("controllerPointcut()")    后置通知
+		@Around("controllerPointcut()")   环绕通知 在切点前执行有点操作，后也执行一点操作，可以将前后置通知整和到这里
+		

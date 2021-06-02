@@ -40,3 +40,29 @@
 			* 首先将请求和响应类型进行强转，再判断其是get还是post(String method = req.getMethod()),只负责检测异常和抛出，是否支持get/post
 			请求
 		4. 自己实现类来继承HttpServlet类，根据需要再重写两个方法
+	
+	* ServletConfig类
+		1. 可以获取servlet程序的别名servlet-name的值 getServletName();
+		2. 可以获取servlet程序中的init初始化参数 getInitParameter(String name)；
+		// 在web.xml文件中的一个servlet标签中的<init-param>中标签定义的键值对
+		3. 获取servlet的context对象 ServletContext getServletContext();
+		4. Enumeration<String> getInitParameterNames();
+		
+	* servlet程序和servletConfig对象都是由Tomcat负责创建，servlet程序默认为第一次访问时创建，而一个config对象对应一个servlet对象，
+	
+	* ServletContext接口
+		1. 是一个接口，表示servlet上下文对象
+		2. 一个web过程，只有一个ServletContext对象实例
+		3. ServletContext对象是一个域对象
+		
+	* 域对象：
+		1. 存数据：Map对象put();域对象setAttribute(String name, Object object)
+		2. 取数据：get();  Object getAttribute(String name)
+		3. 删除数据：remove();  removeAttribute(String name)
+	* ServletContext类的四个作用：
+		1. 获取web.xml中配置的上下文参数<context-param>
+		2. 获取当前工作路径 格式：/工程路径
+		3. 获取工程部署后在服务器硬盘上的绝对路径
+		4. 像map一样获取数据，以键值对的方式
+	
+	

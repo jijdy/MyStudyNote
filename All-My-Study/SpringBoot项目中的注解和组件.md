@@ -72,20 +72,20 @@ public static void main(String[] args) {
 
 ~~~
 
-    1. 首先向SpringApplication的实例对象中传入启动类的class对象，根据这个传入的实例对象的classpath
-       * 使用SpringFactoriesLoader在应用的classpath中查找并加载所有可用的ApplicationContextInitializer。（应用程序上下文初始化器）
-       * 使用SpringFactoriesLoader在应用的classpath中查找并加载所有可用的ApplicationListener。（应用程序监听器）
-    2. 首先使用在上下文中拿到的所有应用监听器，分别遍历的调用它们的SpringApplicationRunListener类的started()方法，使其启动
-    3. 创建并配置SpringBoot需要用到的Environment配置，包括主机编号和端口号等
-    4. 环境准备好了之后，再次调用监听器SpringApplicationRunListener的environmentPrepared()方法，加载环境变量并进行下一步动作
-    5. 若使用了banner，则打印横幅，启动的图像，代表SpringBoot开始启动
-    6. 通过前置配置创建ApplicationContext并将环境参数传入其中
-    7. 创建好应用程序上下文之后，再次使用SpringFactoriesLoader遍历查找加载classpath下的ApplicationContextInitializer类并调用initialize(applicationContext)方法完成上下文的初始化操作
-    8. 在完成初始化操作之后，再将之前通过注解等方式获取到的ioc容器中的配置类加载到准备完毕的ApplicationContext中
-    9. 再遍历调用SpringApplicationRunListener监听器的contextLoaded()方法，告知监听器初始化操作已经完成
-    10. 完成上下文的基本配置后，再调用ApplicationContext的refresh()方法，完成IOC容器的所有与初始化操作
-    11. 查找ApplicationContext中的所有存在的CommandLineRunner，遍历的执行这些命令行操作
-    12. 最后，再调用SpringApplicationRunListener的finished()方法，完成整个时间的监听过程。
+1. 首先向SpringApplication的实例对象中传入启动类的class对象，根据这个传入的实例对象的classpath
+* 使用SpringFactoriesLoader在应用的classpath中查找并加载所有可用的ApplicationContextInitializer。（应用程序上下文初始化器）
+* 使用SpringFactoriesLoader在应用的classpath中查找并加载所有可用的ApplicationListener。（应用程序监听器）
+2. 首先使用在上下文中拿到的所有应用监听器，分别遍历的调用它们的SpringApplicationRunListener类的started()方法，使其启动
+3. 创建并配置SpringBoot需要用到的Environment配置，包括主机编号和端口号等
+4. 环境准备好了之后，再次调用监听器SpringApplicationRunListener的environmentPrepared()方法，加载环境变量并进行下一步动作
+5. 若使用了banner，则打印横幅，启动的图像，代表SpringBoot开始启动
+6. 通过前置配置创建ApplicationContext并将环境参数传入其中
+7. 创建好应用程序上下文之后，再次使用SpringFactoriesLoader遍历查找加载classpath下的ApplicationContextInitializer类并调用initialize(applicationContext)方法完成上下文的初始化操作
+8. 在完成初始化操作之后，再将之前通过注解等方式获取到的ioc容器中的配置类加载到准备完毕的ApplicationContext中
+9. 再遍历调用SpringApplicationRunListener监听器的contextLoaded()方法，告知监听器初始化操作已经完成
+10. 完成上下文的基本配置后，再调用ApplicationContext的refresh()方法，完成IOC容器的所有与初始化操作
+11. 查找ApplicationContext中的所有存在的CommandLineRunner，遍历的执行这些命令行操作
+12. 最后，再调用SpringApplicationRunListener的finished()方法，完成整个时间的监听过程。
 
 
 
@@ -109,4 +109,10 @@ import org.springframework.util.DigestUtils;
 
 req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
 ~~~
+
+* RedisTemplate：是一个jedis的高度封装工具类，直接对redis进行简单的操作，
+
+
+
+* logback组件，在SpringBoot中就有集成，用于日志打印，日志级别fatal ===>> error ===>> warn ===>> info ===>> debug ===>> trace 一般使用最多的就是info，warn，error三种级别的日志，当有error级别的日志出现时，服务器就有可能会出现问题
 

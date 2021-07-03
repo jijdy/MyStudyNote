@@ -93,12 +93,42 @@ public static void main(String[] args) {
 
 * @component：实现了bean的注入，将这个类交给Spring容器来进行管理
 
-* @Controller 控制器（注入服务， 用于标注控制层。
+* @Controller 控制器（注入服务）， 用于标注控制层，并用于向前端或客服端开放HTTP连接需要的资源。
 * @Service 服务（注入dao），用于标注服务层，主要用来进行业务的逻辑处理
 * @Repository（实现dao访问），用于标注数据访问层，也可以说用于标注数据访问组件，即DAO组件
 *  @Component （把普通pojo实例化到spring容器中，相当于配置文件xml）泛指各种组件，就是说当我们的类不属于各种归类的时候（不属于@Controller、@Services等的时候），我们就可以使用@Component来标注这个类，以便Spring能够扫描到其中的有关注解和信息。
 
+##### 定时任务注解
 
+* @EnableScheduling：在SpringBoot的启动类上添加，表示支持自动定时功能并对全局ioc容器中的定时方法进行扫描，完成定时任务
+* @Scheduled：在方法上进行声明(其所在类要被@Componen修饰，注入容器)，表示要进行定时任务的执行。
+  * corn：使用corn表达式进行定时，如" 0 0/5 * * * ?"表示没5分钟执行一次，若下一次执行时上一次的执行未完成，则推迟执行
+  * zone：表示执行时间的时区
+  * fixedDelay和fixxedDelayString：表示一个固定的言辞执行时间，到这次任务执行结束后，下一次执行的间隔 @Scheduled(fixedDelayString= "2000")表示2s的时差
+  * fixedRate 和fixedRateString：基本同上，但是间隔为这次开始之间和下次开始市价，如错过，则跳过
+  * .initialDelay 和initialDelayString：表示一个初始延迟时间，第一次被调用前辈延迟的时间，只用一次调用的时间
+
+##### 异步化注解
+
+* @EnableAsycn：在SpringBoot的启动类上使用，来使SpringBoot支持异步操作
+* @Asycn：使用在需要进行异步的类或方法上添加，添加之后在进入到这个类或方法时会重新开启一个线程进行异步执行，调用这个异步化的类或方法的对象会继续执行之后的操作。
+  * 其和websocket的启动注解有冲突，需要重新封装一个类来使用
+
+##### 事务
+
+* @Transactional：事务注解，由于添加在类或方法上进行一致性的操作
+* 事务注解运用在方法上时，若其中同一个类上对事务方法进行调用，则事务部起作用
+
+##### 参数校检相关
+
+~~~java
+@JsonFormat(pattern="MM-dd", timezone = "GMT+8")
+@DateTimeFormat(pattern = "yyyy-MM-dd")
+~~~
+
+* @JsonFormat：timezone=" "表示时区的设置，一般国内都设置GMT+8，表示上海时间；pattern表示设置输出时间的具体格式"yyyy-MM-dd"表示年月日；一般用于和数据库交互的参数上进行设置，用于将从数据库中取出的日期格式信息进行归整化
+* @DateTimeFormat：也是设置时间格式的，但是此表示将前台的日期格式化为数据库需要存储的日期格式
+* @JsonFormat主要用于从后台数据库中取出日期进行格式化；@DateTimeFormat用于前台向后台的时间格式化；
 
 ### 用到的组件
 
